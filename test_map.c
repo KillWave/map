@@ -24,16 +24,16 @@ root_t tree = RB_ROOT;
 int main() {
     char *key = "hello";
     char *word = "world";
-    put(&tree, key, word);
+    set(&tree, key, word);
 
     char *key1 = "hello 1";
     char *word1 = "world 1";
-    put(&tree, key1, word1);
+    set(&tree, key1, word1);
 
 
     char *key2 = "hello 1";
     char *word2 = "world 2 change";
-    put(&tree, key2, word2);
+    set(&tree, key2, word2);
 
     map_t *data1 = get(&tree, "hello 1");
 

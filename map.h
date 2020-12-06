@@ -56,7 +56,7 @@ map_t *get(root_t *root, char *str) {
    return NULL;
 }
 
-int put(root_t *root, char* key, void* val) {
+int set(root_t *root, char* key, void* val) {
     map_t *data = (map_t*)malloc(sizeof(map_t));
     data->key = (char*)malloc((strlen(key)+1)*sizeof(char));
     strcpy(data->key, key);

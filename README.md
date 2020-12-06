@@ -9,11 +9,11 @@ I grab rb_tree from linux kernel. Just import map.h, rbtree.h, rbtree.c in you p
 
 ```c
 
-//put the key and value into map
+//set the key and value into map
 root_t tree = RB_ROOT; 
 char *key = "hello";
 char *word = "world";
-put(&tree, key, word);
+set(&tree, key, word);
 
 //get the value from key
 map_t *data = get(&tree, "zhang");
