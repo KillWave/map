@@ -38,21 +38,14 @@ int main() {
     map_t *data1 = get(&tree, "hello 1");
 
     if (data1 != NULL)
-        printf("%s\n", data1->val);
+        printf("%s\n", (char*)data1->val);
 
-    map_t *node;
-    for (node = map_first(&tree); node; node=map_next(&(node->node))) {
-        printf("%s\n", node->key);
+    mapIterator(node){
+         printf("%s\n", node->key);
     }
  
     // free map if you don't need
-    map_t *nodeFree = NULL;
-    for (nodeFree = map_first(&tree); nodeFree; nodeFree = map_first(&tree)) {
-        if (nodeFree) {
-            rb_erase(&nodeFree->node, &tree);
-            map_free(nodeFree);
-        }
-    }
+    map_clear(&tree,false);
     return 0;
 }
 

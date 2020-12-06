@@ -21,11 +21,17 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdbool.h>
+#define mapIterator(node)\
+    map_t *node;\
+    for (node = map_first(&tree); node; node=map_next(&(node->node)))
+
+ 
 
 struct map {
     struct rb_node node;
     char *key;
-    char *val;
+    void *val;
 };
 
 typedef struct map map_t;
@@ -50,13 +56,11 @@ map_t *get(root_t *root, char *str) {
    return NULL;
 }
 
-int put(root_t *root, char* key, char* val) {
+int put(root_t *root, char* key, void* val) {
     map_t *data = (map_t*)malloc(sizeof(map_t));
     data->key = (char*)malloc((strlen(key)+1)*sizeof(char));
     strcpy(data->key, key);
-    data->val = (char*)malloc((strlen(val)+1)*sizeof(char));
-    strcpy(data->val, val);
-    
+    data->val = val;
     rb_node_t **new_node = &(root->rb_node), *parent = NULL;
     while (*new_node) {
         map_t *this_node = container_of(*new_node, map_t, node);
@@ -68,7 +72,7 @@ int put(root_t *root, char* key, char* val) {
         }else if (result > 0) {
             new_node = &((*new_node)->rb_right);
         }else {
-            strcpy(this_node->val, val);
+            this_node->val = val;
             free(data);
             return 0;
         }
@@ -90,16 +94,27 @@ map_t *map_next(rb_node_t *node) {
     return rb_entry(next, map_t, node);
 }
 
-void map_free(map_t *node){
+void map_free(map_t *node,bool freeVal){
     if (node != NULL) {
         if (node->key != NULL) {
             free(node->key);
             node->key = NULL;
-            free(node->val);
-            node->val = NULL;
-    }
+            if(freeVal){
+                free(node->val);
+                node->val = NULL;
+            }
+        }
         free(node);
         node = NULL;
+    }
+}
+void map_clear(root_t *tree,bool freeVal){
+    map_t *nodeFree = NULL;
+    for (nodeFree = map_first(tree); nodeFree; nodeFree = map_first(tree)) {
+        if (nodeFree) {
+            rb_erase(&(nodeFree->node), tree);
+            map_free(nodeFree,freeVal);
+        }
     }
 }
 
