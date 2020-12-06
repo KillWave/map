@@ -21,16 +21,13 @@ if (data != NULL)
 	printf("%s\n", data->val);
 
 //Traversal
-map_t *node;
-for (node = map_first(&tree); node; node=map_next(&(node->node))) {
-	printf("%s\n", node->val);
-}
+  mapIterator(node){
+         printf("%s\n", node->key);
+    }
 
 //Free map node
-if (data) {
-    rb_erase(&data->node, &tree);
-	map_free(data);
-}
+//malloc true otherwise false
+    map_clear(&tree,false);
 ````
 
 # Bug Reporting and Feature Requests
